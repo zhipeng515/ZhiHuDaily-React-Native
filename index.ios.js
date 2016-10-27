@@ -4,43 +4,46 @@
  */
 'use strict';
 
-var React = require('react-native');
-var {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Navigator,
-  NavigatorIOS,
-} = React;
+import React, { Component } from 'react';
+import {
+    AppRegistry,
+    StyleSheet,
+    Text,
+    View,
+    Navigator,
+    NavigatorIOS,
+} from 'react-native';
 
-var TimerMixin = require('react-timer-mixin');
-
-var SplashScreen = require('./SplashScreen');
-var MainScreen = require('./MainScreen');
-var StoryScreen = require('./StoryScreen');
+import SplashScreen from './SplashScreen';
+import MainScreen from './MainScreen';
+import StoryScreen from './StoryScreen';
 
 var _navigator;
 
-var RCTZhiHuDaily = React.createClass({
-  mixins: [TimerMixin],
-
-  getInitialState: function() {
-    return {
-      splashed: false,
+export default class RCTZhiHuDaily extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      splashed: false
     };
-  },
+  }
 
-  componentDidMount: function() {
-    this.setTimeout(
+  componentDidMount() {
+    this.timer = setTimeout(
       () => {
         this.setState({splashed: true});
       },
       2000,
     );
-  },
+  };
 
-  RouteMapper: function(route, navigationOperations, onComponentRef) {
+  componentWillUnmount() {
+    // 如果存在this.timer，则使用clearTimeout清空。
+    // 如果你使用多个timer，那么用多个变量，或者用个数组来保存引用，然后逐个clear
+    this.timer && clearTimeout(this.timer);
+  }
+
+  RouteMapper(route, navigationOperations, onComponentRef) {
     _navigator = navigationOperations;
     // return (
     //   <View style={styles.container}>
@@ -63,9 +66,9 @@ var RCTZhiHuDaily = React.createClass({
         </View>
       );
     }
-  },
+  };
 
-  render: function() {
+  render() {
     if (this.state.splashed) {
       var initialRoute = {name: 'home'};
       return (
@@ -94,7 +97,7 @@ var RCTZhiHuDaily = React.createClass({
       );
     }
   }
-});
+};
 
 var styles = StyleSheet.create({
   container: {

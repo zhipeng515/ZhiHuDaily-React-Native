@@ -1,10 +1,10 @@
 'use strict';
 
-var React = require('react-native');
+import React from 'react';
 
-var {
-  AsyncStorage,
-} = React;
+import {
+    AsyncStorage
+} from 'react-native';
 
 var API_COVER_URL = "http://news-at.zhihu.com/api/4/start-image/1080*1776";
 var API_LATEST_URL = 'http://news-at.zhihu.com/api/4/news/latest';
@@ -30,7 +30,7 @@ Date.prototype.yyyymmdd = function() {
   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
 };
 
-function DataRepository() { // Singleton pattern
+export default function DataRepository() { // Singleton pattern
   if (typeof DataRepository.instance === 'object') {
     return DataRepository.instance;
   }
@@ -280,5 +280,3 @@ DataRepository.prototype._mergeReadState = function(src, dst) {
 
   return dst;
 };
-
-module.exports = DataRepository;

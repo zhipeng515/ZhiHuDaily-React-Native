@@ -1,37 +1,39 @@
 'use strict';
 
-var React = require('react-native');
-var {
-  AsyncStorage,
-  Platform,
-  ListView,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  TouchableNativeFeedback,
-  TouchableHighlight,
-} = React
+import React, { Component } from 'react';
+import {
+    AsyncStorage,
+    Platform,
+    ListView,
+    Image,
+    StyleSheet,
+    Text,
+    View,
+    TouchableNativeFeedback,
+    TouchableHighlight,
+} from 'react-native';
 
-var DataRepository = require('./DataRepository');
+import DataRepository from './DataRepository';
 
 var repository = new DataRepository();
 
-var ThemesList = React.createClass({
-  getInitialState: function() {
+export default class ThemesList extends Component {
+  constructor(props) {
+    super(props);
+
     var dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row1 !== row2,
     });
 
-    return {
+    this.state =  {
       isLoading: false,
       dataSource: dataSource,
     };
-  },
-  componentDidMount: function() {
+  };
+  componentDidMount() {
     this.fetchThemes();
-  },
-  fetchThemes: function() {
+  };
+  fetchThemes() {
     repository.getThemes()
       .then((themes) => {
         this.setState({
@@ -46,8 +48,8 @@ var ThemesList = React.createClass({
         });
       })
       .done();
-  },
-  renderHeader: function() {
+  };
+  renderHeader() {
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
@@ -100,8 +102,8 @@ var ThemesList = React.createClass({
         </TouchableElement>
       </View>
     );
-  },
-  renderRow: function(
+  };
+  renderRow(
     theme: Object,
     sectionID: number | string,
     rowID: number | string,
@@ -127,8 +129,8 @@ var ThemesList = React.createClass({
         </TouchableElement>
       </View>
     );
-  },
-  render: function() {
+  };
+  render() {
     return (
       <View style={styles.container} {...this.props}>
         <ListView
@@ -144,8 +146,8 @@ var ThemesList = React.createClass({
         />
       </View>
     );
-  },
-});
+  };
+};
 
 var styles = StyleSheet.create({
   container: {
@@ -211,5 +213,3 @@ var styles = StyleSheet.create({
     opacity: 0.0,
   },
 });
-
-module.exports = ThemesList;

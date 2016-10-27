@@ -1,26 +1,25 @@
 'use strict';
 
-var React = require('react-native');
-
-var {
-  Image,
-  PixelRatio,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  TouchableNativeFeedback,
-  View,
-} = React;
+import React, { Component } from 'react';
+import {
+    Image,
+    PixelRatio,
+    Platform,
+    StyleSheet,
+    Text,
+    TouchableHighlight,
+    TouchableNativeFeedback,
+    View,
+} from 'react-native';
 
 var TITLE_REF = 'title';
 
-var StoryItem = React.createClass({
-  updateReadSate: function() {
+export default class StoryItem extends Component {
+  updateReadSate() {
     this.refs[TITLE_REF].setNativeProps({style: {color: '#777777'}});
     this.props.onSelect();
-  },
-  render: function() {
+  };
+  render() {
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
@@ -35,7 +34,7 @@ var StoryItem = React.createClass({
     return (
       <View {...this.props}>
         <TouchableElement
-          onPress={this.updateReadSate /*this.props.onSelect*/}
+          onPress={this.updateReadSate.bind(this) /*this.props.onSelect*/}
           onShowUnderlay={this.props.onHighlight}
           onHideUnderlay={this.props.onUnhighlight}>
           <View style={styles.row}>
@@ -54,7 +53,7 @@ var StoryItem = React.createClass({
       </View>
     );
   }
-});
+};
 
 var styles = StyleSheet.create({
   storyTitle: {
@@ -89,5 +88,3 @@ var styles = StyleSheet.create({
     width: 80,
   },
 });
-
-module.exports = StoryItem;

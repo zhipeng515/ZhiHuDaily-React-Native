@@ -1,46 +1,40 @@
 'use strict';
 
-var React = require('react-native');
-var {
-  AsyncStorage,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-} = React;
-
-var Drawer = require('react-native-drawer');
-var StoriesList = require('./StoriesList');
-var ThemesList = require('./ThemesList');
+import React, {Component} from 'react';
+import Drawer from 'react-native-drawer';
+import StoriesList from './StoriesList';
+import ThemesList from './ThemesList';
 
 var DRAWER_REF = 'drawer';
 
-var MainScreen = React.createClass({
-  getInitialState: function() {
-    return ({
-      theme: null,
-    });
-  },
-  onSelectTheme: function(theme) {
-    this.refs[DRAWER_REF].close();
-    this.setState({theme: theme});
-  },
-  onRefresh: function() {
-    this.onSelectTheme(this.state.theme);
-  },
-  render: function() {
-    var drawer = <ThemesList onSelectItem={this.onSelectTheme} />;
-    return (
-        <Drawer
-          ref={DRAWER_REF}
-          openDrawerOffset={100}
-          panCloseMask={1}
-          content={drawer} >
-          <StoriesList theme={this.state.theme} navigator={this.props.navigator}/>
-        </Drawer>
-      );
-  }
+export default class MainScreen extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            theme: null,
+        };
+    };
 
-});
+    onSelectTheme(theme) {
+        this.refs[DRAWER_REF].close();
+        this.setState({theme: theme});
+    };
 
-module.exports = MainScreen;
+    onRefresh() {
+        this.onSelectTheme(this.state.theme);
+    };
+
+    render() {
+        var drawer = <ThemesList onSelectItem={this.onSelectTheme.bind(this)}/>;
+        return (
+            <Drawer
+                ref={DRAWER_REF}
+                openDrawerOffset={100}
+                panCloseMask={1}
+                content={drawer}>
+                <StoriesList theme={this.state.theme} navigator={this.props.navigator}/>
+            </Drawer>
+        );
+    }
+};
+

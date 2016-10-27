@@ -1,11 +1,11 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, { Component } from 'react';
+import {
   View,
   requireNativeComponent,
   PropTypes
-} = React;
+} from  'react-native';
 
 var ReactNativeViewAttributes = require('ReactNativeViewAttributes');
 
@@ -30,7 +30,7 @@ class ObservableWebView extends React.Component {
 ObservableWebView.propTypes = {
   ...View.propTypes,
   url: PropTypes.string,
-  html: PropTypes.string,
+  source: PropTypes.string,
   css: PropTypes.string,
   onScrollChange: PropTypes.func,
 };

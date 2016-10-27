@@ -1,18 +1,18 @@
 'use strict';
 
-var React = require('react-native');
-var {
-  AppRegistry,
-  Platform,
-  PixelRatio,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableNativeFeedback,
-  TouchableHighlight,
-  ToastAndroid,
-} = React;
+import React, { Component } from 'react';
+import {
+    AppRegistry,
+    Platform,
+    PixelRatio,
+    StyleSheet,
+    Text,
+    View,
+    Image,
+    TouchableNativeFeedback,
+    TouchableHighlight,
+    ToastAndroid,
+} from 'react-native';
 
 var SwitchAndroid = require('SwitchAndroid');
 var ToolbarAndroid = require('ToolbarAndroid');
@@ -20,17 +20,18 @@ var statusBarSize = Platform.OS == 'ios' ? 10 : 0;
 
 var API_STROY_EXTRA = 'http://news-at.zhihu.com/api/4/story-extra/';
 
-var DetailToolbar = React.createClass({
-  getInitialState: function() {
-    return({
+export default class DetailToolbar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       isLoading: true,
-      extra: null,
-    });
-  },
-  componentDidMount: function() {
+      extra: null
+    };
+  };
+  componentDidMount() {
     this.fetchStroyExtra();
-  },
-  fetchStroyExtra: function() {
+  };
+  fetchStroyExtra() {
     fetch(API_STROY_EXTRA + this.props.story.id)
       .then((response) => response.json())
       .then((responseData) => {
@@ -46,29 +47,29 @@ var DetailToolbar = React.createClass({
         });
       })
       .done();
-  },
-  _onPressBackButton: function() {
+  };
+  _onPressBackButton() {
     if (this.props.navigator) {
       this.props.navigator.pop();
     }
-  },
-  _onPressShareButton: function() {
+  };
+  _onPressShareButton() {
     // TODO:
     ToastAndroid.show('分享', ToastAndroid.SHORT);
-  },
-  _onPressCollectButton: function() {
+  };
+  _onPressCollectButton() {
     // TODO:
     ToastAndroid.show('收藏', ToastAndroid.SHORT);
-  },
-  _onPressCommentButton: function() {
+  };
+  _onPressCommentButton() {
     // TODO:
     ToastAndroid.show('评论', ToastAndroid.SHORT);
-  },
-  _onPressPriseButton: function() {
+  };
+  _onPressPriseButton() {
     // TODO:
     ToastAndroid.show('赞', ToastAndroid.SHORT);
-  },
-  render: function() {
+  };
+  render() {
     var TouchableElement = TouchableHighlight;
     if (Platform.OS === 'android') {
       TouchableElement = TouchableNativeFeedback;
@@ -76,7 +77,7 @@ var DetailToolbar = React.createClass({
     return(
       <View {...this.props}>
         <View style={styles.actionsContainer}>
-          <TouchableElement onPress={this._onPressBackButton}>
+          <TouchableElement onPress={this._onPressBackButton.bind(this)}>
             <View style={styles.actionItem}>
               <Image
                 style={styles.backIcon}
@@ -85,7 +86,7 @@ var DetailToolbar = React.createClass({
             </View>
           </TouchableElement>
           <View style={{flex: 1}} />
-          <TouchableElement onPress={this._onPressShareButton}>
+          <TouchableElement onPress={this._onPressShareButton.bind(this)}>
             <View style={styles.actionItem}>
               <Image
                 style={styles.actionIcon}
@@ -93,7 +94,7 @@ var DetailToolbar = React.createClass({
                 resizeMode='contain' />
             </View>
           </TouchableElement>
-          <TouchableElement onPress={this._onPressCollectButton}>
+          <TouchableElement onPress={this._onPressCollectButton.bind(this)}>
             <View style={styles.actionItem}>
               <Image
                 style={styles.actionIcon}
@@ -101,7 +102,7 @@ var DetailToolbar = React.createClass({
                 resizeMode='contain' />
             </View>
           </TouchableElement>
-          <TouchableElement onPress={this._onPressCommentButton}>
+          <TouchableElement onPress={this._onPressCommentButton.bind(this)}>
             <View style={styles.actionItem}>
               <Image
                 style={styles.actionIconWithCount}
@@ -133,9 +134,8 @@ var DetailToolbar = React.createClass({
       //   actions={[]} >
       // </ToolbarAndroid>
     );
-  },
-
-});
+  }
+};
 
 var styles = StyleSheet.create({
   actionsContainer: {

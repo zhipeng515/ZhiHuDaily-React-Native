@@ -1,24 +1,23 @@
 'use strict';
 
-var React = require('react-native');
-var {
-  AsyncStorage,
-  Image,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-} = React;
-
-var Animated = require('Animated');
+import React, { Component } from 'react';
+import {
+    AsyncStorage,
+    Image,
+    StyleSheet,
+    Text,
+    View,
+    Dimensions,
+    Animated
+} from 'react-native';
 
 var WINDOW_WIDTH = Dimensions.get('window').width;
 
-var DataRepository = require('./DataRepository');
+import DataRepository from './DataRepository';
 var repository = new DataRepository();
 
-var SplashScreen = React.createClass({
-  fetchData: function() {
+export default class SplashScreen extends Component {
+  fetchData(){
     repository.getCover()
       .then((result) => {
         if (result){
@@ -30,14 +29,17 @@ var SplashScreen = React.createClass({
       })
       .done();
     repository.updateCover();
-  },
-  getInitialState: function() {
-    return {
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
       cover: null,
       bounceValue: new Animated.Value(1),
     };
-  },
-  componentDidMount: function() {
+  }
+
+  componentDidMount() {
     this.fetchData();
     this.state.bounceValue.setValue(1);
     Animated.timing(
@@ -47,8 +49,8 @@ var SplashScreen = React.createClass({
         duration: 5000,
       }
     ).start();
-  },
-  render: function() {
+  };
+  render() {
     var img, text;
     if (this.state.cover) {
       img = {uri: this.state.cover.img};
@@ -77,7 +79,7 @@ var SplashScreen = React.createClass({
       </View>
     );
   }
-});
+};
 
 var styles = StyleSheet.create({
   container: {
@@ -110,5 +112,3 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
   }
 });
-
-module.exports = SplashScreen;
