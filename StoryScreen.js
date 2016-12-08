@@ -16,6 +16,7 @@ import {
 } from 'react-native';
 
 import DetailToolbar from './DetailToolbar';
+import ParallaxView from 'react-native-parallax-view';
 var MyWebView = (Platform.OS === 'ios') ? WebView : require('./WebView');
 
 var BASE_URL = 'http://news.at.zhihu.com/api/4/news/';
@@ -87,25 +88,23 @@ export default class StoryScreen extends Component {
           + '" /></head><body>' + this.state.detail.body
           + '</body></html>';
         return (
-          <View style={styles.container}>
-            <MyWebView
+            <View style={styles.container}>
+        <ParallaxView
+            backgroundSource={{uri: this.state.detail.image}}
+            windowHeight={300}
+            header={(
+                <Text style={styles.header}>
+                  {this.state.detail.title}
+                </Text>
+            )}
+            scrollableViewStyle={{ backgroundColor: 'red' }}
+        >
+          <MyWebView
               style={styles.content}
-              source={ {html:html + ''}}
-              onScrollChange={this.onWebViewScroll.bind(this)}/>
-            <Animated.View style={[styles.header, {transform: [{translateY}]}]}>
-              <Image
-                ref={REF_HEADER}
-                source={{uri: this.state.detail.image}}
-                style={styles.headerImage} >
-                <View style={styles.titleContainer}>
-                  <Text style={styles.title}>
-                    {this.props.story.title}
-                  </Text>
-                </View>
-              </Image>
-            </Animated.View>
-            {toolbar}
-          </View>
+              html={html}/>
+        </ParallaxView>
+        {toolbar}
+            </View>
         );
       } else {
         return (

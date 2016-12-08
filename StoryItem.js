@@ -42,10 +42,10 @@ export default class StoryItem extends Component {
               * omit a property or set it to undefined if it's inside a shape,
               * even if it isn't required */}
             <Text
-              ref={TITLE_REF}
-              style={this.props.story.read ? styles.storyTitleRead : styles.storyTitle}
-              numberOfLines={3}>
-                {this.props.story.title}
+                ref={TITLE_REF}
+                style={this.props.story.read ? styles.storyTitleRead : styles.storyTitle}
+                numberOfLines={3}>
+              {this.props.story.title}
             </Text>
             {image}
           </View>

@@ -1,7 +1,7 @@
 'use strict';
 
-var React = require('react-native');
-var {
+import React, {Component} from 'react';
+import {
   AsyncStorage,
   Image,
   StyleSheet,
@@ -13,12 +13,12 @@ var {
   BackAndroid,
   TouchableOpacity,
   Dimensions,
-} = React;
+} from 'react-native';
 
-var Drawer = require('react-native-drawer');
-var StoriesList = require('./StoriesList');
-var ThemesList = require('./ThemesList');
-var SwipeRefreshLayoutAndroid = require('./SwipeRereshLayout');
+import Drawer from 'react-native-drawer';
+import StoriesList from './StoriesList';
+import ThemesList from './ThemesList';
+import SwipeRefreshLayoutAndroid from './SwipeRereshLayout';
 
 var DRAWER_REF = 'drawer';
 var DRAWER_WIDTH_LEFT = 56;
@@ -29,29 +29,30 @@ var toolbarActions = [
 ];
 
 var MainScreen = React.createClass({
-  getInitialState: function() {
-    return ({
+  constructor(props) {
+    super(props);
+    this.state = {
       theme: null,
-    });
-  },
-  onSelectTheme: function(theme) {
+    };
+  };
+  onSelectTheme(theme) {
     this.refs[DRAWER_REF].closeDrawer();
     this.setState({theme: theme});
-  },
-  _renderNavigationView: function() {
+  };
+  _renderNavigationView() {
     return (
       <ThemesList
-        onSelectItem={this.onSelectTheme}
+        onSelectItem={this.onSelectTheme.bind(this)}
       />
     );
-  },
-  onRefresh: function() {
+  };
+  onRefresh() {
     this.onSelectTheme(this.state.theme);
-  },
-  onRefreshFinish: function() {
+  };
+  onRefreshFinish() {
     this.swipeRefreshLayout && this.swipeRefreshLayout.finishRefresh();
-  },
-  render: function() {
+  };
+  render() {
     var title = this.state.theme ? this.state.theme.name : '首页';
     return (
       <DrawerLayoutAndroid
@@ -59,7 +60,7 @@ var MainScreen = React.createClass({
         drawerWidth={Dimensions.get('window').width - DRAWER_WIDTH_LEFT}
         keyboardDismissMode="on-drag"
         drawerPosition={DrawerLayoutAndroid.positions.Left}
-        renderNavigationView={this._renderNavigationView}>
+        renderNavigationView={this._renderNavigationView.bind(this)}>
         <View style={styles.container}>
           <ToolbarAndroid
             navIcon={require('image!ic_menu_white')}
@@ -71,9 +72,9 @@ var MainScreen = React.createClass({
             onActionSelected={this.onActionSelected} />
           <SwipeRefreshLayoutAndroid
             ref={(swipeRefreshLayout) => { this.swipeRefreshLayout = swipeRefreshLayout; }}
-            onSwipeRefresh={this.onRefresh}>
+            onSwipeRefresh={this.onRefresh.bind(this)}>
             <StoriesList theme={this.state.theme} navigator={this.props.navigator}
-              onRefreshFinish={this.onRefreshFinish}/>
+              onRefreshFinish={this.onRefreshFinish.bind(this)}/>
           </SwipeRefreshLayoutAndroid>
         </View>
       </DrawerLayoutAndroid>
